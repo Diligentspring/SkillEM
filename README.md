@@ -138,4 +138,4 @@ M-step 对每个任务的后验期望等权平均，skill 与动作内部保留 
 - 本地 `../SkillEM_Proposal/sections/proposal.tex`、`methods.tex` 和 `appendix.tex`
 - 本地 `../SearchLM-ExSkill/` 的实现与分析
 
-`skillem/vendor/` 的提示模板、动作投影和 EM 评分为固定上游文件，保留原版权头及 Apache-2.0 许可证，详见 `THIRD_PARTY.md`。
+`skillem/vendor/` 的提示模板、动作投影和 EM 评分为固定上游文件，保留原版权头，随附 Apache-2.0 许可证及 SkillRL 仓库根目录的 MIT 许可证，详见 `THIRD_PARTY.md`。

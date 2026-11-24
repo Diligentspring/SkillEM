@@ -8,7 +8,7 @@ The files below are copied unchanged from [aiming-lab/SkillRL](https://github.co
 | `skillem/vendor/search_projection.py` | `agent_system/environments/env_package/search/projection.py` |
 | `skillem/vendor/search_metrics.py` | `agent_system/environments/env_package/search/third_party/skyrl_gym/envs/search/utils.py` |
 
-The upstream files carry Apache-2.0 copyright notices. The upstream license is included at `skillem/vendor/LICENSE.SkillRL`. The metrics implementation credits Search-R1. The downloaded source archive retains its own licenses.
+The copied files carry Apache-2.0 copyright notices. The Apache-2.0 license is included at `skillem/vendor/LICENSE.Apache-2.0`. SkillRL's repository-level MIT license is preserved separately at `skillem/vendor/LICENSE.SkillRL`. The metrics implementation credits Search-R1. The downloaded source archive retains its own licenses.
 
 `skillem/bank.py` follows the schema compatibility approach in the local SearchLM-ExSkill fork and implements a separate lexical baseline. The upstream SkillRL runtime, the lexical baseline, and generated SkillEM skills have distinct retrieval behavior.
 

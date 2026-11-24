@@ -20,7 +20,7 @@ skillem = "skillem.cli:main"
 include = ["skillem*"]
 
 [tool.setuptools.package-data]
-"skillem.vendor" = ["LICENSE.SkillRL"]
+"skillem.vendor" = ["LICENSE.SkillRL", "LICENSE.Apache-2.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
