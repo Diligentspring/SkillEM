@@ -1,0 +1,31 @@
+{
+  "method": "static_skill",
+  "seed": 0,
+  "rounds": 3,
+  "learning_rate": 1e-06,
+  "m_epochs": 1,
+  "batch_tasks": 4,
+  "model": {
+    "name": "materials/models/Search-7B-SFT",
+    "revision": null,
+    "device": "cuda",
+    "dtype": "bfloat16",
+    "lora_rank": 16,
+    "gradient_checkpointing": true,
+    "max_field_tokens": 64,
+    "max_action_tokens": 700,
+    "max_context": 8192,
+    "history_length": 4,
+    "inject_initial": true
+  },
+  "environment": {
+    "url": "http://127.0.0.1:8030/retrieve",
+    "topk": 3,
+    "timeout": 60,
+    "max_steps": 4,
+    "temperature": 1.0
+  },
+  "samples": 4,
+  "validation_limit": 128,
+  "patience": 2
+}

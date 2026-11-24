@@ -1,0 +1,11 @@
+{
+  "source_rows": 169615,
+  "clean_counts": {
+    "train": 161194,
+    "validation": 8411
+  },
+  "excluded_overlap_rows": 10,
+  "test_rows": 51713,
+  "audit": "passed",
+  "exclusion_rule": "strip+lower question equality; no test answers used"
+}

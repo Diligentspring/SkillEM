@@ -1,0 +1,358 @@
+{
+  "source": {
+    "repository": "https://github.com/aiming-lab/SkillRL",
+    "revision": "4d984d455b9b02f0bad283cbe9ab3d66a7e5b89d",
+    "archive": "SkillRL-4d984d455b9b.tar.gz",
+    "sha256": "c83c7fab29b50341d5424762701257eab5db33e21a05959ece953b1030437500",
+    "bytes": 34997194
+  },
+  "assets": [
+    {
+      "group": "data",
+      "repo": "PeterJinGo/nq_hotpotqa_train",
+      "revision": "b7d80abfee334a7a91cb377544f09180d58b34f6",
+      "file": "test.parquet",
+      "destination": "materials/datasets/PeterJinGo--nq_hotpotqa_train/test.parquet",
+      "expected_bytes": 70370337,
+      "status": "verified",
+      "bytes": 70370337,
+      "sha256": "30aa887b6d47e06e8c0f6f5307c88fe4e13461ac25a20ec0a5433ad7a4fe25dc",
+      "verification": "published_lfs_sha256"
+    },
+    {
+      "group": "data",
+      "repo": "PeterJinGo/nq_hotpotqa_train",
+      "revision": "b7d80abfee334a7a91cb377544f09180d58b34f6",
+      "file": "train.parquet",
+      "destination": "materials/datasets/PeterJinGo--nq_hotpotqa_train/train.parquet",
+      "expected_bytes": 355663891,
+      "status": "verified",
+      "bytes": 355663891,
+      "sha256": "c3cc21e862a8469105de666101578cbff23cdc77e91a803cef102622c89cc4f6",
+      "verification": "published_lfs_sha256"
+    },
+    {
+      "group": "data",
+      "repo": "Jianwen/SkillRL-SFT-Data",
+      "revision": "bd3996c4e863ac59e6e4ab35549cf3741faf5e4f",
+      "file": "search/train-00000-of-00001.parquet",
+      "destination": "materials/datasets/Jianwen--SkillRL-SFT-Data/search/train-00000-of-00001.parquet",
+      "expected_bytes": 1050795,
+      "status": "verified",
+      "bytes": 1050795,
+      "sha256": "3ad6fcb1876920db499895c670974a6c1fafe4c9bd01558085e5674e9112c48b",
+      "verification": "published_lfs_sha256"
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "added_tokens.json",
+      "destination": "materials/models/Search-7B-SFT/added_tokens.json",
+      "expected_bytes": 605,
+      "status": "verified",
+      "bytes": 605,
+      "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b",
+      "verification": "pinned_git_file_size"
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "chat_template.jinja",
+      "destination": "materials/models/Search-7B-SFT/chat_template.jinja",
+      "expected_bytes": 2507,
+      "status": "verified",
+      "bytes": 2507,
+      "sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+      "verification": "pinned_git_file_size"
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "config.json",
+      "destination": "materials/models/Search-7B-SFT/config.json",
+      "expected_bytes": 1318,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "generation_config.json",
+      "destination": "materials/models/Search-7B-SFT/generation_config.json",
+      "expected_bytes": 243,
+      "status": "verified",
+      "bytes": 243,
+      "sha256": "56bcea7e8cc49dfa450ce7cdaf629a8dd0fc15b4aabf958d03db53f48be56ce1",
+      "verification": "pinned_git_file_size"
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "merges.txt",
+      "destination": "materials/models/Search-7B-SFT/merges.txt",
+      "expected_bytes": 1671853,
+      "status": "verified",
+      "bytes": 1671853,
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+      "verification": "pinned_git_file_size"
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00001-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00001-of-00009.safetensors",
+      "expected_bytes": 1886423520,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00002-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00002-of-00009.safetensors",
+      "expected_bytes": 1864467800,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00003-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00003-of-00009.safetensors",
+      "expected_bytes": 1864467800,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00004-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00004-of-00009.safetensors",
+      "expected_bytes": 1864467824,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00005-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00005-of-00009.safetensors",
+      "expected_bytes": 1864467848,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00006-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00006-of-00009.safetensors",
+      "expected_bytes": 1864467848,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00007-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00007-of-00009.safetensors",
+      "expected_bytes": 1864467848,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00008-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00008-of-00009.safetensors",
+      "expected_bytes": 1068046456,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00009-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00009-of-00009.safetensors",
+      "expected_bytes": 1089994880,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model.safetensors.index.json",
+      "destination": "materials/models/Search-7B-SFT/model.safetensors.index.json",
+      "expected_bytes": 27788,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "special_tokens_map.json",
+      "destination": "materials/models/Search-7B-SFT/special_tokens_map.json",
+      "expected_bytes": 613,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "tokenizer.json",
+      "destination": "materials/models/Search-7B-SFT/tokenizer.json",
+      "expected_bytes": 11421896,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "tokenizer_config.json",
+      "destination": "materials/models/Search-7B-SFT/tokenizer_config.json",
+      "expected_bytes": 4712,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "vocab.json",
+      "destination": "materials/models/Search-7B-SFT/vocab.json",
+      "expected_bytes": 2776833,
+      "status": "verified",
+      "bytes": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "verification": "pinned_git_file_size"
+    },
+    {
+      "group": "retrieval",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "config.json",
+      "destination": "materials/models/e5-base-v2/config.json",
+      "expected_bytes": 650,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "retrieval",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "model.safetensors",
+      "destination": "materials/models/e5-base-v2/model.safetensors",
+      "expected_bytes": 437955512,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "retrieval",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "modules.json",
+      "destination": "materials/models/e5-base-v2/modules.json",
+      "expected_bytes": 387,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "retrieval",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "sentence_bert_config.json",
+      "destination": "materials/models/e5-base-v2/sentence_bert_config.json",
+      "expected_bytes": 57,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "retrieval",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "special_tokens_map.json",
+      "destination": "materials/models/e5-base-v2/special_tokens_map.json",
+      "expected_bytes": 125,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "retrieval",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "tokenizer.json",
+      "destination": "materials/models/e5-base-v2/tokenizer.json",
+      "expected_bytes": 711396,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "retrieval",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "tokenizer_config.json",
+      "destination": "materials/models/e5-base-v2/tokenizer_config.json",
+      "expected_bytes": 314,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "retrieval",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "vocab.txt",
+      "destination": "materials/models/e5-base-v2/vocab.txt",
+      "expected_bytes": 231508,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "retrieval",
+      "repo": "PeterJinGo/wiki-18-e5-index",
+      "revision": "a4d31160a035f30764604f4827cd8f1d0315eb86",
+      "file": "part_aa",
+      "destination": "materials/retrieval/part_aa",
+      "expected_bytes": 42949672960,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "retrieval",
+      "repo": "PeterJinGo/wiki-18-e5-index",
+      "revision": "a4d31160a035f30764604f4827cd8f1d0315eb86",
+      "file": "part_ab",
+      "destination": "materials/retrieval/part_ab",
+      "expected_bytes": 21609402413,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    },
+    {
+      "group": "retrieval",
+      "repo": "PeterJinGo/wiki-18-corpus",
+      "revision": "69c1c00ffe7c5554c68d8548355cb22e46aabc51",
+      "file": "wiki-18.jsonl.gz",
+      "destination": "materials/retrieval/wiki-18.jsonl.gz",
+      "expected_bytes": 5123307260,
+      "status": "not_downloaded",
+      "partial_bytes": 0
+    }
+  ],
+  "large_assets_note": "7B model tensors and full Wikipedia index are server downloads; local QA training has not been run."
+}

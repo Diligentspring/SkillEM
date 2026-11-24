@@ -1,0 +1,26 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+materials/SkillRL-*/
+materials/*.tar.gz
+materials/*.pdf
+materials/*.html
+materials/datasets/
+materials/models/
+materials/retrieval/
+runs/
+data/processed*/
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# Keep only small reproducibility records from the local materials directory.
+materials/*
+!materials/skillrl_source.json
+!materials/environment-lock.txt
+!materials/verification.json
+!materials/split_audit.json
+!materials/test_data_verification.json
+!materials/status.json

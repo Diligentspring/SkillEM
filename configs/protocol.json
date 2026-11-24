@@ -1,0 +1,53 @@
+{
+  "skillrl_revision": "4d984d455b9b02f0bad283cbe9ab3d66a7e5b89d",
+  "task": "Search-Augmented QA, not the Jeopardy SearchQA dataset",
+  "training_repository": "PeterJinGo/nq_hotpotqa_train",
+  "training_revision": "b7d80abfee334a7a91cb377544f09180d58b34f6",
+  "evaluation_file": "test.parquet",
+  "benchmarks": [
+    "nq",
+    "triviaqa",
+    "popqa",
+    "hotpotqa",
+    "2wikimultihopqa",
+    "musique",
+    "bamboogle"
+  ],
+  "test_counts": {
+    "nq": 3610,
+    "triviaqa": 11313,
+    "popqa": 14267,
+    "hotpotqa": 7405,
+    "2wikimultihopqa": 12576,
+    "musique": 2417,
+    "bamboogle": 125
+  },
+  "sft_checkpoint": "Jianwen/Search-7B-SFT",
+  "retriever": "intfloat/e5-base-v2",
+  "retrieval_corpus": "PeterJinGo/wiki-18-corpus",
+  "retrieval_index": "PeterJinGo/wiki-18-e5-index",
+  "document_topk": 3,
+  "max_environment_steps": 4,
+  "history_length": 4,
+  "max_response_tokens": 700,
+  "official_metrics": "vendored SearchEnv compute_score on projected assistant actions",
+  "released_script_grpo": {
+    "train_batch_size": 256,
+    "val_batch_size": 512,
+    "group_size": 4,
+    "learning_rate": 1e-06,
+    "kl_coef": 0.001,
+    "invalid_action_penalty": 0.01,
+    "max_prompt_length": 5000,
+    "total_epochs": 0
+  },
+  "adaptations": [
+    "Derive validation from train only; the released script uses test.parquet as validation.",
+    "SkillEM conditions the first action on its generated skill; upstream omits memory at reset. Set inject_initial=false for this ablation.",
+    "Use bounded token fields with explicit normalized probabilities for generated skills.",
+    "Fail on context overflow rather than use upstream left truncation.",
+    "Sequential HF execution and LoRA are not a throughput reproduction of verl/vLLM.",
+    "The Search bank uses query_type_skills; upstream SkillsOnlyMemory reads task_specific_skills. Preserve original and corrected baselines separately.",
+    "Exclude exact normalized question overlaps from training; keep the complete official test set and record excluded source IDs."
+  ]
+}

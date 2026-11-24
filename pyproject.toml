@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skillem"
+version = "0.1.0"
+description = "Latent skill EM for Search-Augmented QA"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+train = ["torch>=2.5,<2.7", "transformers>=4.46,<4.52", "accelerate>=1,<2", "peft>=0.14,<0.16", "datasets>=3,<4"]
+test = ["pytest>=8,<9"]
+
+[project.scripts]
+skillem = "skillem.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["skillem*"]
+
+[tool.setuptools.package-data]
+"skillem.vendor" = ["LICENSE.SkillRL"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

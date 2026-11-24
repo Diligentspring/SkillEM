@@ -1,0 +1,334 @@
+{
+  "date": "2026-11-19",
+  "timezone": "Asia/Shanghai",
+  "pytest_passed": 27,
+  "checks": [
+    "finite posterior recovery for all four kernels",
+    "local detailed balance",
+    "exact finite EM likelihood",
+    "sequence-sum loss and prompt/observation masking",
+    "joint M-step gradient parity",
+    "leave-one-out gradient expectation",
+    "theta frozen during variational E-step",
+    "Qwen2 LoRA update/save/reload",
+    "interrupted resume matches uninterrupted parameters",
+    "validation best checkpoint and early stopping",
+    "official scorer/projection parity",
+    "incremental CLI collection",
+    "JSONL preserves Unicode line separators in released QA questions",
+    "held-out overlap exclusion preserves official test set"
+  ],
+  "smoke_runs": {
+    "mcmc": {
+      "completed_rounds": 2,
+      "metrics": [
+        {
+          "round": 1,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 64.74920678138733
+            }
+          ],
+          "elapsed_seconds": 0.06419020798057318,
+          "model_calls": {
+            "scoring_forwards": 56,
+            "generation_forwards": 23,
+            "generated_tokens": 34
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        },
+        {
+          "round": 2,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 63.96019101142883
+            }
+          ],
+          "elapsed_seconds": 0.048795250011608005,
+          "model_calls": {
+            "scoring_forwards": 56,
+            "generation_forwards": 13,
+            "generated_tokens": 19
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        }
+      ],
+      "scope": "synthetic fixture and randomly initialized tiny Transformer"
+    },
+    "variational": {
+      "completed_rounds": 2,
+      "metrics": [
+        {
+          "round": 1,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 65.75187456607819
+            }
+          ],
+          "elapsed_seconds": 0.07360420899931341,
+          "model_calls": {
+            "scoring_forwards": 28,
+            "generation_forwards": 0,
+            "generated_tokens": 0
+          },
+          "inference_model_calls": {
+            "scoring_forwards": 20,
+            "generation_forwards": 38,
+            "generated_tokens": 54
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        },
+        {
+          "round": 2,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 65.24653553962708
+            }
+          ],
+          "elapsed_seconds": 0.06096145900664851,
+          "model_calls": {
+            "scoring_forwards": 28,
+            "generation_forwards": 0,
+            "generated_tokens": 0
+          },
+          "inference_model_calls": {
+            "scoring_forwards": 20,
+            "generation_forwards": 38,
+            "generated_tokens": 55
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        }
+      ],
+      "scope": "synthetic fixture and randomly initialized tiny Transformer"
+    },
+    "snis": {
+      "completed_rounds": 2,
+      "metrics": [
+        {
+          "round": 1,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 65.49124324321747
+            }
+          ],
+          "elapsed_seconds": 0.04379695898387581,
+          "model_calls": {
+            "scoring_forwards": 18,
+            "generation_forwards": 19,
+            "generated_tokens": 28
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        },
+        {
+          "round": 2,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 65.60075402259827
+            }
+          ],
+          "elapsed_seconds": 0.029354958969634026,
+          "model_calls": {
+            "scoring_forwards": 18,
+            "generation_forwards": 19,
+            "generated_tokens": 26
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        }
+      ],
+      "scope": "synthetic fixture and randomly initialized tiny Transformer"
+    },
+    "prior_uniform": {
+      "completed_rounds": 2,
+      "metrics": [
+        {
+          "round": 1,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 65.41270923614502
+            }
+          ],
+          "elapsed_seconds": 0.03570087504340336,
+          "model_calls": {
+            "scoring_forwards": 14,
+            "generation_forwards": 19,
+            "generated_tokens": 28
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        },
+        {
+          "round": 2,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 65.38164210319519
+            }
+          ],
+          "elapsed_seconds": 0.025289874989539385,
+          "model_calls": {
+            "scoring_forwards": 14,
+            "generation_forwards": 19,
+            "generated_tokens": 26
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        }
+      ],
+      "scope": "synthetic fixture and randomly initialized tiny Transformer"
+    },
+    "sft": {
+      "completed_rounds": 2,
+      "metrics": [
+        {
+          "round": 1,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 42.37275695800781
+            }
+          ],
+          "elapsed_seconds": 0.014823083009105176,
+          "model_calls": {
+            "scoring_forwards": 2,
+            "generation_forwards": 0,
+            "generated_tokens": 0
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        },
+        {
+          "round": 2,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 41.67351150512695
+            }
+          ],
+          "elapsed_seconds": 0.005078499962110072,
+          "model_calls": {
+            "scoring_forwards": 2,
+            "generation_forwards": 0,
+            "generated_tokens": 0
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        }
+      ],
+      "scope": "synthetic fixture and randomly initialized tiny Transformer"
+    },
+    "static_skill": {
+      "completed_rounds": 2,
+      "metrics": [
+        {
+          "round": 1,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 42.08279991149902
+            }
+          ],
+          "elapsed_seconds": 0.015636875003110617,
+          "model_calls": {
+            "scoring_forwards": 2,
+            "generation_forwards": 0,
+            "generated_tokens": 0
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        },
+        {
+          "round": 2,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 41.44452095031738
+            }
+          ],
+          "elapsed_seconds": 0.005633666994981468,
+          "model_calls": {
+            "scoring_forwards": 2,
+            "generation_forwards": 0,
+            "generated_tokens": 0
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        }
+      ],
+      "scope": "synthetic fixture and randomly initialized tiny Transformer"
+    }
+  },
+  "finite_audit": {
+    "exact_em_log_likelihood": [
+      -0.7541046886308893,
+      -0.6730116670092564,
+      -0.6730116670092564,
+      -0.6730116670092564,
+      -0.6730116670092564
+    ],
+    "mcmc_total_variation": 0.013799999999999951,
+    "diagnostics": {
+      "joint_evaluations": 4,
+      "local/attempts": 2039,
+      "proposal_evaluations": 8204,
+      "local/accepted": 1844,
+      "gibbs/attempts": 2013,
+      "gibbs/accepted": 2013,
+      "lazy": 10135,
+      "independent/attempts": 4150,
+      "independent/accepted": 3043,
+      "mwg/attempts": 2063,
+      "mwg/accepted": 1873,
+      "retained_states": 20000,
+      "unique_states": 4,
+      "chain_unique_states": [
+        4,
+        4
+      ],
+      "chain_final_states": [
+        {
+          "fields": {
+            "when_to_apply": "0",
+            "preconditions": "1",
+            "steps": "fixed",
+            "verification": "fixed",
+            "recovery": "fixed"
+          },
+          "token_ids": {}
+        },
+        {
+          "fields": {
+            "when_to_apply": "0",
+            "preconditions": "0",
+            "steps": "fixed",
+            "verification": "fixed",
+            "recovery": "fixed"
+          },
+          "token_ids": {}
+        }
+      ],
+      "log_joint_rhat": 1.0011784737743794,
+      "log_joint_ess": 1965.6156237154714,
+      "diagnostic_note": "Scalar unsplit R-hat and truncated positive autocorrelation ESS; not a convergence certificate"
+    },
+    "scope": "finite probability audit; not a QA result"
+  },
+  "not_run": [
+    "7B GPU training",
+    "full Wikipedia E5 retrieval",
+    "full seven-benchmark QA evaluation",
+    "large-model convergence certification",
+    "distributed verl/vLLM training"
+  ],
+  "data_audit": {
+    "source_rows": 169615,
+    "clean_counts": {
+      "train": 161194,
+      "validation": 8411
+    },
+    "excluded_overlap_rows": 10,
+    "test_rows": 51713,
+    "audit": "passed",
+    "exclusion_rule": "strip+lower question equality; no test answers used"
+  }
+}

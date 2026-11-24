@@ -1,0 +1,13 @@
+{
+  "total": 51713,
+  "counts": {
+    "nq": 3610,
+    "triviaqa": 11313,
+    "popqa": 14267,
+    "hotpotqa": 7405,
+    "2wikimultihopqa": 12576,
+    "musique": 2417,
+    "bamboogle": 125
+  },
+  "matches_official_protocol": true
+}

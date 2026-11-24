@@ -1,0 +1,319 @@
+{
+  "skillrl_revision": "4d984d455b9b02f0bad283cbe9ab3d66a7e5b89d",
+  "assets": [
+    {
+      "group": "data",
+      "repo_type": "dataset",
+      "repo": "PeterJinGo/nq_hotpotqa_train",
+      "revision": "b7d80abfee334a7a91cb377544f09180d58b34f6",
+      "file": "test.parquet",
+      "destination": "materials/datasets/PeterJinGo--nq_hotpotqa_train/test.parquet",
+      "bytes": 70370337,
+      "sha256": "30aa887b6d47e06e8c0f6f5307c88fe4e13461ac25a20ec0a5433ad7a4fe25dc"
+    },
+    {
+      "group": "data",
+      "repo_type": "dataset",
+      "repo": "PeterJinGo/nq_hotpotqa_train",
+      "revision": "b7d80abfee334a7a91cb377544f09180d58b34f6",
+      "file": "train.parquet",
+      "destination": "materials/datasets/PeterJinGo--nq_hotpotqa_train/train.parquet",
+      "bytes": 355663891,
+      "sha256": "c3cc21e862a8469105de666101578cbff23cdc77e91a803cef102622c89cc4f6"
+    },
+    {
+      "group": "data",
+      "repo_type": "dataset",
+      "repo": "Jianwen/SkillRL-SFT-Data",
+      "revision": "bd3996c4e863ac59e6e4ab35549cf3741faf5e4f",
+      "file": "search/train-00000-of-00001.parquet",
+      "destination": "materials/datasets/Jianwen--SkillRL-SFT-Data/search/train-00000-of-00001.parquet",
+      "bytes": 1050795,
+      "sha256": "3ad6fcb1876920db499895c670974a6c1fafe4c9bd01558085e5674e9112c48b"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "added_tokens.json",
+      "destination": "materials/models/Search-7B-SFT/added_tokens.json",
+      "bytes": 605
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "chat_template.jinja",
+      "destination": "materials/models/Search-7B-SFT/chat_template.jinja",
+      "bytes": 2507
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "config.json",
+      "destination": "materials/models/Search-7B-SFT/config.json",
+      "bytes": 1318
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "generation_config.json",
+      "destination": "materials/models/Search-7B-SFT/generation_config.json",
+      "bytes": 243
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "merges.txt",
+      "destination": "materials/models/Search-7B-SFT/merges.txt",
+      "bytes": 1671853
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00001-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00001-of-00009.safetensors",
+      "bytes": 1886423520,
+      "sha256": "79ba387a1441bd7ffe6a34433b06fa907a1ec2925b5bd640cf9d41b26f7e1635"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00002-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00002-of-00009.safetensors",
+      "bytes": 1864467800,
+      "sha256": "8ef9175a885a762e4107500bc36c1a40aab87293fccbe1cb1c8c977d1a63b803"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00003-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00003-of-00009.safetensors",
+      "bytes": 1864467800,
+      "sha256": "b1cccf15a22ddc29eb30ce06900f58dcb0f68bce077ba2901c7c85a6b9150fe4"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00004-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00004-of-00009.safetensors",
+      "bytes": 1864467824,
+      "sha256": "5b7bb107011819e069bb40406667e2801c7e2c9365f439392e665beeb53df26f"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00005-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00005-of-00009.safetensors",
+      "bytes": 1864467848,
+      "sha256": "175fd3f52b1144d11010e60e7335387541d518550fe7e4d44e0964a140a1fdac"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00006-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00006-of-00009.safetensors",
+      "bytes": 1864467848,
+      "sha256": "1acb701491cf6f6838da1e8613f6c4169d19b6d29fa48a21342aed328151c570"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00007-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00007-of-00009.safetensors",
+      "bytes": 1864467848,
+      "sha256": "05e29f4665083c8368c22826d71a35e24210492d4e7705ee35ef5627319f3602"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00008-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00008-of-00009.safetensors",
+      "bytes": 1068046456,
+      "sha256": "4723dec9bd59be871f5857a34c1c8e2d54cb3c584ba06bca3fd031c00be64590"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model-00009-of-00009.safetensors",
+      "destination": "materials/models/Search-7B-SFT/model-00009-of-00009.safetensors",
+      "bytes": 1089994880,
+      "sha256": "06006972c3be88e8a44fe21cfe2b0472b130780c781a741f8f90f1fe5ba3aae2"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "model.safetensors.index.json",
+      "destination": "materials/models/Search-7B-SFT/model.safetensors.index.json",
+      "bytes": 27788
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "special_tokens_map.json",
+      "destination": "materials/models/Search-7B-SFT/special_tokens_map.json",
+      "bytes": 613
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "tokenizer.json",
+      "destination": "materials/models/Search-7B-SFT/tokenizer.json",
+      "bytes": 11421896,
+      "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "tokenizer_config.json",
+      "destination": "materials/models/Search-7B-SFT/tokenizer_config.json",
+      "bytes": 4712
+    },
+    {
+      "group": "model",
+      "repo_type": "model",
+      "repo": "Jianwen/Search-7B-SFT",
+      "revision": "6eb381ef2da1bc3b3cd4982c8c10663d4faaddaf",
+      "file": "vocab.json",
+      "destination": "materials/models/Search-7B-SFT/vocab.json",
+      "bytes": 2776833
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "model",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "config.json",
+      "destination": "materials/models/e5-base-v2/config.json",
+      "bytes": 650
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "model",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "model.safetensors",
+      "destination": "materials/models/e5-base-v2/model.safetensors",
+      "bytes": 437955512,
+      "sha256": "d0d559c47d5f71b1d280b13b62a2657f3e3bc70c0786f9ab91a36545e6a8f693"
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "model",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "modules.json",
+      "destination": "materials/models/e5-base-v2/modules.json",
+      "bytes": 387
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "model",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "sentence_bert_config.json",
+      "destination": "materials/models/e5-base-v2/sentence_bert_config.json",
+      "bytes": 57
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "model",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "special_tokens_map.json",
+      "destination": "materials/models/e5-base-v2/special_tokens_map.json",
+      "bytes": 125
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "model",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "tokenizer.json",
+      "destination": "materials/models/e5-base-v2/tokenizer.json",
+      "bytes": 711396
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "model",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "tokenizer_config.json",
+      "destination": "materials/models/e5-base-v2/tokenizer_config.json",
+      "bytes": 314
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "model",
+      "repo": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "file": "vocab.txt",
+      "destination": "materials/models/e5-base-v2/vocab.txt",
+      "bytes": 231508
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "dataset",
+      "repo": "PeterJinGo/wiki-18-e5-index",
+      "revision": "a4d31160a035f30764604f4827cd8f1d0315eb86",
+      "file": "part_aa",
+      "destination": "materials/retrieval/part_aa",
+      "bytes": 42949672960,
+      "sha256": "a8a6a246951da4bbc8771a223283ef61963882a32864d9044ec00abb90fc3023"
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "dataset",
+      "repo": "PeterJinGo/wiki-18-e5-index",
+      "revision": "a4d31160a035f30764604f4827cd8f1d0315eb86",
+      "file": "part_ab",
+      "destination": "materials/retrieval/part_ab",
+      "bytes": 21609402413,
+      "sha256": "b6d9bc943626fe7cb44de4c849e9379e7f272ab216c0552acbcf2390cc033c11"
+    },
+    {
+      "group": "retrieval",
+      "repo_type": "dataset",
+      "repo": "PeterJinGo/wiki-18-corpus",
+      "revision": "69c1c00ffe7c5554c68d8548355cb22e46aabc51",
+      "file": "wiki-18.jsonl.gz",
+      "destination": "materials/retrieval/wiki-18.jsonl.gz",
+      "bytes": 5123307260,
+      "sha256": "7abd929223399cd63c52b499f289bf4f9039be1e9f8c43e1cb3938305b2317db"
+    }
+  ]
+}
