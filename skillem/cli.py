@@ -99,13 +99,17 @@ def main(argv=None):
     torch.manual_seed(config.get("seed", 0))
     if args.command == "train":
         from .training import train
+        from .proposals import is_config, needs_inference_model
+        if config.get("method") in {"is_em", "snis"}:
+            is_config(config)  # Validate proposal options before loading model weights.
+        needs_phi = needs_inference_model(config)
         theta_name = phi_name = None
         if args.resume:
             latest = load_config(Path(args.output) / "latest.json")
             theta_name = str(Path(args.output) / latest["round_dir"] / "theta")
             phi_name = str(Path(args.output) / latest["round_dir"] / "phi")
         theta = load_backend(config, theta_name)
-        phi = load_backend(config, phi_name, inference=True) if config.get("method") == "variational" else None
+        phi = load_backend(config, phi_name, inference=True) if needs_phi else None
         validation_fn = None
         if args.validation:
             from .data import audit_splits

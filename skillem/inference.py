@@ -7,7 +7,8 @@ from collections import Counter
 from dataclasses import dataclass, field
 
 from .math_utils import categorical, logsumexp, softmax, weight_diagnostics, chain_diagnostics
-from .schema import FIELDS, Skill, Task
+from .schema import FIELDS, Skill, Task, fingerprint
+from .proposals import ISConfig, make_proposal, scalar_logprob
 
 
 def joint(model, task, skill):
@@ -142,10 +143,76 @@ def sample_mcmc(model, task: Task, config: MCMCConfig, rng: random.Random,
     return samples, diagnostics, trace
 
 
+def sample_is(theta, task, config: ISConfig, rng, phi=None, *,
+              theta_version="unspecified", inference_version=None):
+    """Frozen E-step: log w = log p_old(z,y|x) - log r_old(z|x,y).
+
+    Call under no_grad for neural backends. The returned weights are Python
+    scalars, and scoring caches exist only within this frozen E-step.
+    """
+    config.validate()
+    proposal = make_proposal(theta, config, phi)
+    draws = [proposal.sample(task, rng) for _ in range(config.samples)]
+    cache, scores, log_weights = {}, [], []
+    for draw in draws:
+        key = draw.skill.key()
+        if key not in cache:
+            score = proposal.score(task, draw.skill)
+            execution = scalar_logprob(theta.log_execution(task, draw.skill))
+            if not math.isfinite(score.log_prob):
+                raise ValueError("A sampled proposal state has zero proposal probability")
+            # Exact cancellation also preserves the legacy prior SNIS numbers.
+            log_weight = (execution if config.proposal == "prior" else
+                          execution + (score.log_prior - score.log_prob))
+            cache[key] = score, execution, log_weight
+        score, execution, log_weight = cache[key]
+        scores.append((score, execution))
+        log_weights.append(log_weight)
+    weights = softmax(log_weights)  # Reject all-zero mass; never fall back to uniform weights.
+    samples = [PosteriorSample(draw.skill, w) for draw, w in zip(draws, weights)]
+    if config.deduplicate:
+        aggregated = {}
+        for sample in samples:
+            key = sample.skill.key()
+            if key not in aggregated:
+                aggregated[key] = PosteriorSample(sample.skill, 0.)
+            aggregated[key].weight += sample.weight
+        samples = list(aggregated.values())
+
+    def json_log(value):
+        # JSON has no infinity. Null encodes zero probability for scored terms.
+        return value if value is not None and math.isfinite(value) else None
+
+    proposal_version = fingerprint({"kind": proposal.kind, "theta": theta_version,
+        "inference": inference_version if proposal.kind == "mixture" else None,
+        "prior_ratio": config.prior_ratio if proposal.kind == "mixture" else 1.})
+    records = [{"task_id": task.task_id, "sample_id": i, "skill": draw.skill.to_dict(),
+                "proposal_kind": proposal.kind, "proposal_component": draw.component,
+                "prior_ratio": config.prior_ratio if proposal.kind == "mixture" else 1.,
+                "log_prior": json_log(score.log_prior), "log_execution": json_log(execution),
+                "log_inference": json_log(score.log_inference), "log_proposal": score.log_prob,
+                "log_weight": json_log(log_weight), "normalized_weight": weight,
+                "theta_version": theta_version,
+                "proposal_version": proposal_version,
+                "inference_version": inference_version if proposal.kind == "mixture" else None}
+               for i, (draw, (score, execution), log_weight, weight) in
+               enumerate(zip(draws, scores, log_weights, weights))]
+    components = dict(Counter(draw.component for draw in draws))
+    weight_stats = weight_diagnostics(weights)
+    diagnostics = {**weight_stats, "samples": config.samples,
+                   "ess_ratio": weight_stats["ess"] / config.samples,
+                   "max_weight": max(weights), "unique_skills": len(cache),
+                   "duplicate_rate": 1 - len(cache) / config.samples,
+                   "scored_unique_skills": len(cache), "proposal_components": components,
+                   "log_Z_hat": logsumexp(log_weights) - math.log(config.samples),
+                   "theta_version": theta_version,
+                   "proposal_version": proposal_version,
+                   "inference_version": inference_version if proposal.kind == "mixture" else None,
+                   "evidence_note": "log_Z_hat is a stochastic log-evidence estimate, not an ELBO or monotonicity certificate"}
+    return samples, diagnostics, records
+
+
 def importance_posterior(model, task, count, rng):
-    if count < 1:
-        raise ValueError("Need at least one proposal")
-    states = [model.sample_prior(task.public(), rng) for _ in range(count)]
-    # Prior proposals cancel the prior in the importance ratio.
-    weights = softmax([float(model.log_execution(task, z)) for z in states])
-    return [PosteriorSample(z, w) for z, w in zip(states, weights)], weight_diagnostics(weights)
+    """Backward-compatible prior-only SNIS API."""
+    samples, diagnostics, _ = sample_is(model, task, ISConfig(samples=count), rng)
+    return samples, diagnostics

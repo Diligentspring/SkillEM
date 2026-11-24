@@ -10,14 +10,15 @@ from pathlib import Path
 import torch
 
 from .data import validate_training_tasks
-from .inference import MCMCConfig, PosteriorSample, sample_mcmc, importance_posterior, joint
+from .inference import MCMCConfig, PosteriorSample, sample_mcmc, sample_is, joint
 from .math_utils import loo_advantages
+from .proposals import is_config, needs_inference_model
 from .schema import FIELDS, Skill, fingerprint, write_json
 
 
 def m_step(model, tasks, posterior, optimizer, epochs=1, batch_tasks=1, max_grad_norm=1., objective="joint", rng=None):
     """Average tasks, then posterior mass; never re-normalize a partial sample batch."""
-    if objective not in {"joint", "execution"} or batch_tasks < 1 or epochs < 1:
+    if objective not in {"joint", "execution", "proposal"} or batch_tasks < 1 or epochs < 1:
         raise ValueError("Invalid M-step options")
     for task in tasks:
         samples = posterior[task.task_id]
@@ -39,18 +40,21 @@ def m_step(model, tasks, posterior, optimizer, epochs=1, batch_tasks=1, max_grad
                     if sample.weight == 0:
                         continue
                     scale = sample.weight / len(batch)
-                    if objective == "joint":
-                        for lp in model.iter_skill_scores(task, sample.skill):
+                    if objective in {"joint", "proposal"}:
+                        mode = "inference" if objective == "proposal" else "prior"
+                        for lp in model.iter_skill_scores(task, sample.skill, mode=mode):
                             loss = -scale * lp
                             total += float(loss.detach()) * len(batch)
                             loss.backward()
-                    for lp in model.iter_execution_scores(task, sample.skill):
-                        loss = -scale * lp
-                        total += float(loss.detach()) * len(batch)
-                        loss.backward()
+                    if objective != "proposal":
+                        for lp in model.iter_execution_scores(task, sample.skill):
+                            loss = -scale * lp
+                            total += float(loss.detach()) * len(batch)
+                            loss.backward()
             torch.nn.utils.clip_grad_norm_(model.model.parameters(), max_grad_norm, error_if_nonfinite=True)
             optimizer.step()
-        metrics.append({"epoch": epoch, "sampled_negative_Q": total / len(tasks)})
+        metric = "weighted_proposal_nll" if objective == "proposal" else "sampled_negative_Q"
+        metrics.append({"epoch": epoch, metric: total / len(tasks)})
     return metrics
 
 
@@ -103,20 +107,32 @@ def train(theta, tasks, config, output, phi=None, resume=False, validation_fn=No
     if config.get("rounds", 1) < 1:
         raise ValueError("Need at least one EM round")
     method = config.get("method", "mcmc")
-    if method not in {"mcmc", "variational", "snis", "prior_uniform", "sft", "static_skill"}:
+    if method not in {"mcmc", "variational", "is_em", "snis", "prior_uniform", "sft", "static_skill"}:
         raise ValueError(f"Unknown method: {method}")
-    if method == "variational" and (phi is None or phi.model is theta.model):
-        raise ValueError("Variational EM needs independent theta and phi parameters")
+    is_options = is_config(config) if method in {"is_em", "snis"} else None
+    needs_phi = needs_inference_model(config)
+    if needs_phi and phi is None:
+        raise ValueError(f"{method} needs an independent inference model")
+    if phi is not None and not needs_phi:
+        raise ValueError("This method/proposal does not use an inference model")
+    if phi and ({id(p) for p in theta.model.parameters()} & {id(p) for p in phi.model.parameters()}):
+        raise ValueError("Theta and phi must have independent parameters")
     if phi and (theta.tokenizer.get_vocab() != phi.tokenizer.get_vocab()
-                or theta.eos != phi.eos or theta.max_field_tokens != phi.max_field_tokens):
+                or theta.eos != phi.eos or theta.max_field_tokens != phi.max_field_tokens
+                or set(theta.banned) != set(phi.banned)
+                or theta.model.config.vocab_size != phi.model.config.vocab_size):
         raise ValueError("Theta and phi must use the same latent token support")
+    update_phi = method == "variational" or bool(is_options and is_options.proposal_epochs)
+    if phi and not update_phi:
+        phi.model.requires_grad_(False)
     root = Path(output)
     root.mkdir(parents=True, exist_ok=True)
     config_hash = fingerprint(config)
     data_hash = fingerprint([t.to_dict() for t in tasks])
+    run_id = fingerprint({"config": config_hash, "data": data_hash})
     rng = random.Random(config.get("seed", 0))
     optimizer = make_optimizer(theta, config.get("learning_rate", 1e-6))
-    q_optimizer = make_optimizer(phi, config.get("inference_learning_rate", 1e-6)) if phi else None
+    q_optimizer = make_optimizer(phi, config.get("inference_learning_rate", 1e-6)) if update_phi else None
     completed, initial, history = 0, {}, []
     best_score, stale = -math.inf, 0
     if (root / "latest.json").exists():
@@ -153,6 +169,8 @@ def train(theta, tasks, config, output, phi=None, resume=False, validation_fn=No
         round_dir = root / f"round-{iteration + 1:03d}"
         round_dir.mkdir(exist_ok=True)
         posterior, diagnostics, traces = {}, {}, {}
+        theta_version = f"{run_id}:theta:round-{iteration:03d}"
+        inference_version = f"{run_id}:phi:round-{iteration:03d}" if phi else None
         if method == "variational":
             e_metrics = variational_e_step(theta, phi, tasks, q_optimizer, rng,
                 count=config.get("samples", 4), epochs=config.get("e_epochs", 1),
@@ -166,9 +184,10 @@ def train(theta, tasks, config, output, phi=None, resume=False, validation_fn=No
                     samples, diag, trace = sample_mcmc(theta, task, mcmc_config, rng, starts)
                     diagnostics[task.task_id], traces[task.task_id] = diag, trace
                     initial[task.task_id] = diag["chain_final_states"]
-                elif method == "snis":
-                    samples, diag = importance_posterior(theta, task, config.get("samples", 4), rng)
-                    diagnostics[task.task_id] = diag
+                elif method in {"is_em", "snis"}:
+                    samples, diag, trace = sample_is(theta, task, is_options, rng, phi,
+                        theta_version=theta_version, inference_version=inference_version)
+                    diagnostics[task.task_id], traces[task.task_id] = diag, trace
                 elif method in {"sft", "static_skill"}:
                     static = task.metadata.get("static_skill") if method == "static_skill" else None
                     if method == "static_skill" and static is None:
@@ -192,6 +211,21 @@ def train(theta, tasks, config, output, phi=None, resume=False, validation_fn=No
                          batch_tasks=config.get("batch_tasks", 1), rng=rng,
                          objective="execution" if method in {"sft", "static_skill"} else "joint")
         result = {"round": iteration + 1, "m_step": metrics}
+        if method in {"is_em", "snis"}:
+            rows = list(diagnostics.values())
+            result["is_em"] = {"proposal": is_options.proposal, "samples_per_task": is_options.samples,
+                "mean_ess_ratio": sum(d["ess_ratio"] for d in rows) / len(rows),
+                "mean_max_weight": sum(d["max_weight"] for d in rows) / len(rows),
+                "mean_log_Z_hat": sum(d["log_Z_hat"] for d in rows) / len(rows),
+                "theta_version": theta_version, "inference_version": inference_version}
+            if is_options.proposal_epochs:
+                # Fit the OLD posterior represented by frozen E-step weights.
+                # This is a forward-KL wake update for NEXT round's proposal,
+                # not the reverse-KL variational E-step or a rescore under new theta.
+                result["proposal_fit"] = m_step(phi, tasks, posterior, q_optimizer,
+                    epochs=is_options.proposal_epochs, batch_tasks=config.get("batch_tasks", 1),
+                    objective="proposal", rng=rng)
+                result["proposal_fit_target"] = theta_version
         if validation_fn is not None:
             with torch.no_grad():
                 result["validation"] = validation_fn(theta, iteration + 1)

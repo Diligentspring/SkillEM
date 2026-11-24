@@ -29,7 +29,9 @@ write_tasks(root/'successes.jsonl', [Task('synthetic-0','0',['Paris'],'nq','trai
 base = {'seed':0,'rounds':2,'learning_rate':1e-3,'m_epochs':1,'batch_tasks':1,
         'model':{'name':str(root/'initial'),'device':'cpu','dtype':'float32',
                  'max_field_tokens':2,'max_action_tokens':8,'max_context':2048}}
-for method in ('mcmc','variational','snis','prior_uniform','sft','static_skill'):
+for label in ('mcmc','variational','snis','prior_uniform','sft','static_skill',
+              'is_em','is_em_mixture','is_em_learned'):
+    method = 'is_em' if label.startswith('is_em') else label
     config = {**base,'method':method,'samples':2}
     if method=='mcmc':
         config['mcmc']={'chains':1,'burn_in':1,'samples_per_chain':2,'lazy_probability':.25,
@@ -37,5 +39,13 @@ for method in ('mcmc','variational','snis','prior_uniform','sft','static_skill')
     if method=='variational':
         config['inference_model']={'name':str(root/'initial')}
         config['inference_learning_rate']=1e-3
-    write_json(root/f'{method}.json',config)
-print('Synthetic smoke assets prepared under runs/smoke; these are not QA measurements.')
+    if method=='is_em':
+        config.pop('samples')
+        config['is_em']={'samples':2,'proposal':'prior','deduplicate':True}
+        if label!='is_em':
+            config['is_em'].update(proposal='mixture',prior_ratio=.25,
+                                  proposal_epochs=1 if label=='is_em_learned' else 0)
+            config['inference_model']={'name':str(root/'initial')}
+            config['inference_learning_rate']=1e-3
+    write_json(root/f'{label}.json',config)
+print(f'Synthetic smoke assets prepared under {root}; these are not QA measurements.')

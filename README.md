@@ -23,7 +23,7 @@ bash scripts/smoke.sh
 
 `materials/environment-lock.txt` 记录本地验证所用版本。虚拟环境、下载数据、模型权重和运行产物不随代码库发布。完整 GPU 实验使用 Linux/CUDA 环境；按服务器的 CUDA 版本安装 PyTorch。SkillRL/verl 和检索服务可使用独立环境，避免它们的 vLLM 依赖与本工程冲突。
 
-`smoke.sh` 创建随机小 Transformer 和明确标记的合成轨迹，分别运行两轮 MCMC、Variational、SNIS、prior-uniform、SFT、static-skill，并检查恢复入口。它写入 `runs/smoke/`；重复运行请使用新的输出目录或移走旧冒烟结果。合成轨迹及 loss 不能作为 Search QA 效果数据。
+`smoke.sh` 创建随机小 Transformer 和明确标记的合成轨迹，分别运行两轮 MCMC、Variational、SNIS、prior-uniform、SFT、static-skill，以及 IS-EM 的先验、冻结混合和学习混合 proposal，并检查恢复入口。它写入 `runs/smoke/`；重复运行可设置新的 `SKILLEM_SMOKE_ROOT` 输出目录。合成轨迹及 loss 不能作为 Search QA 效果数据。
 
 ## 材料与下载
 
@@ -109,6 +109,58 @@ python -m skillem.cli evaluate --config configs/search_mcmc.json \
 
 指标包含每个数据集的严格 EM、macro EM、平均步数、检索次数和生成 token 数。`episodes.jsonl` 保存失败在内的逐题记录。`--skill-mode drop` 与 `swap` 用于 skill 干预；`swap` 至少需要两个任务。部署不加载推断模型 φ。
 
+## IS-EM
+
+正式入口为 `method="is_em"`。`configs/search_is_em.json` 使用先验 proposal；`configs/search_is_em_mixture.json` 使用先验与推断模型的混合 proposal。旧的 `method="snis"` 与 `importance_posterior()` 保持先验模式的兼容行为，默认样本数仍为 4。
+
+```bash
+python -m skillem.cli train --config configs/search_is_em.json \
+  --input runs/collection/successes.jsonl --output runs/search-is-em \
+  --validation data/processed_clean/validation.jsonl
+python -m skillem.cli train --config configs/search_is_em_mixture.json \
+  --input runs/collection/successes.jsonl --output runs/search-is-em-mixture \
+  --validation data/processed_clean/validation.jsonl
+```
+
+每轮固定旧参数 θ、推断模型 φ 和 proposal。每任务独立抽取固定 K 个完整 skill，以
+
+```text
+log_weight = log p_old(z|x) + log p_old(y|x,z) - log r_old(z|x,y)
+weight = softmax(log_weight), normalized within each task
+```
+
+近似后验，然后冻结这些样本及权重，复用联合 M-step。`prior` 模式取 `r=p_old(z|x)`，权重中先验恰好抵消，与旧 SNIS 的样本及权重数值一致。完整先验评分仍会记录，因此新诊断路径比原先仅计算执行似然多一次先验评分。
+
+`mixture` 模式使用 `r=ρ p_old(z|x)+(1-ρ)q_old(z|x,y)`，配置的 `prior_ratio=ρ` 必须位于 `(0,1)`。每次先随机选择分量，再从该分量采样完整 skill；对每个候选都计算两个分量的概率，用 log-sum-exp 得到完整混合概率。分母不能只用抽中分量的概率。正比例的先验通道保留目标支持覆盖。θ 和 φ 使用独立参数、相同 tokenizer、有效 token 词表、特殊 token mask 和字段长度支持。
+
+IS 设置放在配置的 `is_em` 对象中，例如：
+
+```json
+{
+  "method": "is_em",
+  "is_em": {
+    "samples": 16,
+    "proposal": "mixture",
+    "prior_ratio": 0.25,
+    "deduplicate": false,
+    "proposal_epochs": 0
+  },
+  "inference_model": {"name": "materials/models/Search-7B-SFT"}
+}
+```
+
+这是附加到已有训练/模型配置的选项片段。省略 `inference_model` 时，混合模式使用主模型的初始配置另加载一个独立实例，以 `(x,y)` 的推断 prompt 生成候选。可显式指定已有推断 checkpoint。先验模式不加载额外模型。
+
+`proposal_epochs=0` 为默认值：φ 保持冻结。设为正整数后，每轮目标模型的 M-step 完成后，使用本轮 E-step 冻结的样本和权重，对 φ 最小化 `-Σ weight·log q_phi(z|x,y)`。该更新拟合旧模型后验，供下一轮 proposal 使用，近似正向 KL；它不训练执行项，也不调用 Variational EM 的 REINFORCE/反向 KL。学习率由 `inference_learning_rate` 指定。更新 φ 后不会重算本轮 IS 权重。
+
+`deduplicate=true` 时，同一完整 token 状态的权重相加后传给 M-step。`trace.json` 仍保留全部 K 次抽样，ESS 也始终按原始抽样计算。重复率和唯一 skill 数另行报告。
+
+每轮的 `trace.json` 按任务保存候选 token IDs、分量来源、先验/执行/q/proposal 的 log-probability、原始 log-weight、归一化权重，以及旧 θ/φ 和组合 proposal 的版本标识。版本标识由运行配置、固定语料、轮次和 proposal 定义派生，并对应已保存的轮次检查点；它不是模型权重文件的内容哈希。JSON 中已评分 log 项的 `null` 表示零概率（负无穷）；先验模式的 `log_inference=null` 表示未评分。所有权重为零、概率为 NaN，或抽中状态的 proposal 概率为零时显式报错。
+
+`diagnostics.json` 记录 ESS、ESS/K、最大权重、权重熵、重复率、分量计数及 `log_Z_hat=logsumexp(log_weight)-log(K)`。`metrics.json` 汇总任务等权诊断、目标模型和推断模型的生成/评分次数，并在学习 proposal 时记录 `weighted_proposal_nll`。`log_Z_hat` 是随机对数证据估计，不作为 ELBO 或单调性证明。首版固定 K，ESS 仅用于诊断，不用于在线停采样、裁剪权重或改温度。
+
+恢复时加载对应的 θ/φ 检查点、可选 proposal 优化器与随机数状态；仍使用原配置、语料和 `--resume`。原始 E-step 权重与版本保存在轮次产物中。独立增益认证尚未实现，普通有限样本 IS-EM 不保证真实似然逐轮单调。
+
 ## 后验与训练约定
 
 五个字段固定为 `when_to_apply/preconditions/steps/verification/recovery`。每字段是有限长度的原始 token 序列：非 EOS 特殊 token 被 mask 后重新归一化；到长度上限时 EOS 的概率为 1。采样、先验评分、q 评分与编辑评分使用同一个定义。保留原始 IDs 避免 decode/re-encode 改变离散状态。该分布是本实现明确声明的有界生成模型，并非无条件复用原始 LM 的截断分数。
@@ -123,7 +175,7 @@ M-step 对每个任务的后验期望等权平均，skill 与动作内部保留 
 
 ## 对照与已知边界
 
-`configs/search_*.json` 提供 MCMC、Variational、SNIS、prior-uniform、SFT 和 static-skill。SNIS 是本 SkillEM 隐变量模型的先验 importance baseline；原始 ExSkill 代码保留在同级 `../SearchLM-ExSkill/`，二者实验名称应区分。
+`configs/search_*.json` 提供 MCMC、Variational、IS-EM、SNIS、prior-uniform、SFT 和 static-skill。SNIS 是 IS-EM 的先验 proposal 兼容入口；原始 ExSkill 代码保留在研究工作区的同级 `../SearchLM-ExSkill/`，二者实验名称应区分。
 
 静态 skill 对照先运行 `scripts/attach_static_skills.py` 给训练/验证数据写入 `metadata.static_skill`，再用 `search_static_skill.json`。该检索器是词法 baseline，兼容两种 SkillBank 键名，不冒充官方 template/embedding 检索。
 

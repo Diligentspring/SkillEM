@@ -1,7 +1,7 @@
 {
-  "date": "2026-11-19",
+  "date": "2026-11-24",
   "timezone": "Asia/Shanghai",
-  "pytest_passed": 27,
+  "pytest_passed": 55,
   "checks": [
     "finite posterior recovery for all four kernels",
     "local detailed balance",
@@ -15,8 +15,12 @@
     "validation best checkpoint and early stopping",
     "official scorer/projection parity",
     "incremental CLI collection",
-    "JSONL preserves Unicode line separators in released QA questions",
-    "held-out overlap exclusion preserves official test set"
+    "JSONL Unicode separators",
+    "held-out question exclusion",
+    "IS prior regression against legacy SNIS",
+    "full mixture denominator and exact posterior recovery",
+    "IS joint gradient and proposal-only weighted cross entropy",
+    "IS prior/frozen-mixture/learned-mixture interrupted resume parity"
   ],
   "smoke_runs": {
     "mcmc": {
@@ -30,7 +34,7 @@
               "sampled_negative_Q": 64.74920678138733
             }
           ],
-          "elapsed_seconds": 0.06419020798057318,
+          "elapsed_seconds": 0.06940620893146843,
           "model_calls": {
             "scoring_forwards": 56,
             "generation_forwards": 23,
@@ -46,7 +50,7 @@
               "sampled_negative_Q": 63.96019101142883
             }
           ],
-          "elapsed_seconds": 0.048795250011608005,
+          "elapsed_seconds": 0.050772582995705307,
           "model_calls": {
             "scoring_forwards": 56,
             "generation_forwards": 13,
@@ -68,7 +72,7 @@
               "sampled_negative_Q": 65.75187456607819
             }
           ],
-          "elapsed_seconds": 0.07360420899931341,
+          "elapsed_seconds": 0.08262958296108991,
           "model_calls": {
             "scoring_forwards": 28,
             "generation_forwards": 0,
@@ -89,7 +93,7 @@
               "sampled_negative_Q": 65.24653553962708
             }
           ],
-          "elapsed_seconds": 0.06096145900664851,
+          "elapsed_seconds": 0.06308687501586974,
           "model_calls": {
             "scoring_forwards": 28,
             "generation_forwards": 0,
@@ -116,9 +120,18 @@
               "sampled_negative_Q": 65.49124324321747
             }
           ],
-          "elapsed_seconds": 0.04379695898387581,
+          "is_em": {
+            "proposal": "prior",
+            "samples_per_task": 2,
+            "mean_ess_ratio": 0.9944571515580589,
+            "mean_max_weight": 0.537328751833649,
+            "mean_log_Z_hat": -42.20432241362848,
+            "theta_version": "53a0a0dd111a49816b70c3f2b15785abdba5733fb3a71be05b50980a4166ba6d:theta:round-000",
+            "inference_version": null
+          },
+          "elapsed_seconds": 0.04607287491671741,
           "model_calls": {
-            "scoring_forwards": 18,
+            "scoring_forwards": 28,
             "generation_forwards": 19,
             "generated_tokens": 28
           },
@@ -132,9 +145,18 @@
               "sampled_negative_Q": 65.60075402259827
             }
           ],
-          "elapsed_seconds": 0.029354958969634026,
+          "is_em": {
+            "proposal": "prior",
+            "samples_per_task": 2,
+            "mean_ess_ratio": 0.9499141781866255,
+            "mean_max_weight": 0.614811455178471,
+            "mean_log_Z_hat": -41.82894570461412,
+            "theta_version": "53a0a0dd111a49816b70c3f2b15785abdba5733fb3a71be05b50980a4166ba6d:theta:round-001",
+            "inference_version": null
+          },
+          "elapsed_seconds": 0.03473650000523776,
           "model_calls": {
-            "scoring_forwards": 18,
+            "scoring_forwards": 28,
             "generation_forwards": 19,
             "generated_tokens": 26
           },
@@ -154,7 +176,7 @@
               "sampled_negative_Q": 65.41270923614502
             }
           ],
-          "elapsed_seconds": 0.03570087504340336,
+          "elapsed_seconds": 0.037476666970178485,
           "model_calls": {
             "scoring_forwards": 14,
             "generation_forwards": 19,
@@ -170,7 +192,7 @@
               "sampled_negative_Q": 65.38164210319519
             }
           ],
-          "elapsed_seconds": 0.025289874989539385,
+          "elapsed_seconds": 0.026176000013947487,
           "model_calls": {
             "scoring_forwards": 14,
             "generation_forwards": 19,
@@ -192,7 +214,7 @@
               "sampled_negative_Q": 42.37275695800781
             }
           ],
-          "elapsed_seconds": 0.014823083009105176,
+          "elapsed_seconds": 0.01739645900670439,
           "model_calls": {
             "scoring_forwards": 2,
             "generation_forwards": 0,
@@ -208,7 +230,7 @@
               "sampled_negative_Q": 41.67351150512695
             }
           ],
-          "elapsed_seconds": 0.005078499962110072,
+          "elapsed_seconds": 0.005464292014949024,
           "model_calls": {
             "scoring_forwards": 2,
             "generation_forwards": 0,
@@ -230,7 +252,7 @@
               "sampled_negative_Q": 42.08279991149902
             }
           ],
-          "elapsed_seconds": 0.015636875003110617,
+          "elapsed_seconds": 0.015591291012242436,
           "model_calls": {
             "scoring_forwards": 2,
             "generation_forwards": 0,
@@ -246,11 +268,213 @@
               "sampled_negative_Q": 41.44452095031738
             }
           ],
-          "elapsed_seconds": 0.005633666994981468,
+          "elapsed_seconds": 0.005499082966707647,
           "model_calls": {
             "scoring_forwards": 2,
             "generation_forwards": 0,
             "generated_tokens": 0
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        }
+      ],
+      "scope": "synthetic fixture and randomly initialized tiny Transformer"
+    },
+    "is_em": {
+      "completed_rounds": 2,
+      "metrics": [
+        {
+          "round": 1,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 65.49124324321747
+            }
+          ],
+          "is_em": {
+            "proposal": "prior",
+            "samples_per_task": 2,
+            "mean_ess_ratio": 0.9944571515580589,
+            "mean_max_weight": 0.537328751833649,
+            "mean_log_Z_hat": -42.20432241362848,
+            "theta_version": "978348d8f94658a5d4ebfe54e435013a46dcbc0585a0a8e897a18975e262a8e8:theta:round-000",
+            "inference_version": null
+          },
+          "elapsed_seconds": 0.0458953749621287,
+          "model_calls": {
+            "scoring_forwards": 28,
+            "generation_forwards": 19,
+            "generated_tokens": 28
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        },
+        {
+          "round": 2,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 65.60075402259827
+            }
+          ],
+          "is_em": {
+            "proposal": "prior",
+            "samples_per_task": 2,
+            "mean_ess_ratio": 0.9499141781866255,
+            "mean_max_weight": 0.614811455178471,
+            "mean_log_Z_hat": -41.82894570461412,
+            "theta_version": "978348d8f94658a5d4ebfe54e435013a46dcbc0585a0a8e897a18975e262a8e8:theta:round-001",
+            "inference_version": null
+          },
+          "elapsed_seconds": 0.03541708400007337,
+          "model_calls": {
+            "scoring_forwards": 28,
+            "generation_forwards": 19,
+            "generated_tokens": 26
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        }
+      ],
+      "scope": "synthetic fixture and randomly initialized tiny Transformer"
+    },
+    "is_em_mixture": {
+      "completed_rounds": 2,
+      "metrics": [
+        {
+          "round": 1,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 65.5515615940094
+            }
+          ],
+          "is_em": {
+            "proposal": "mixture",
+            "samples_per_task": 2,
+            "mean_ess_ratio": 0.958648550937554,
+            "mean_max_weight": 0.6038450167573692,
+            "mean_log_Z_hat": -41.978807513264634,
+            "theta_version": "4641268302a134770921c7f0b69315fe86df9723509b068c17a539a0a7743a51:theta:round-000",
+            "inference_version": "4641268302a134770921c7f0b69315fe86df9723509b068c17a539a0a7743a51:phi:round-000"
+          },
+          "elapsed_seconds": 0.05941691598854959,
+          "model_calls": {
+            "scoring_forwards": 28,
+            "generation_forwards": 0,
+            "generated_tokens": 0
+          },
+          "inference_model_calls": {
+            "scoring_forwards": 10,
+            "generation_forwards": 19,
+            "generated_tokens": 28
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        },
+        {
+          "round": 2,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 66.2377290725708
+            }
+          ],
+          "is_em": {
+            "proposal": "mixture",
+            "samples_per_task": 2,
+            "mean_ess_ratio": 0.9747580194776714,
+            "mean_max_weight": 0.5804606079160649,
+            "mean_log_Z_hat": -41.339706044771994,
+            "theta_version": "4641268302a134770921c7f0b69315fe86df9723509b068c17a539a0a7743a51:theta:round-001",
+            "inference_version": "4641268302a134770921c7f0b69315fe86df9723509b068c17a539a0a7743a51:phi:round-001"
+          },
+          "elapsed_seconds": 0.04657833301462233,
+          "model_calls": {
+            "scoring_forwards": 28,
+            "generation_forwards": 0,
+            "generated_tokens": 0
+          },
+          "inference_model_calls": {
+            "scoring_forwards": 10,
+            "generation_forwards": 20,
+            "generated_tokens": 29
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        }
+      ],
+      "scope": "synthetic fixture and randomly initialized tiny Transformer"
+    },
+    "is_em_learned": {
+      "completed_rounds": 2,
+      "metrics": [
+        {
+          "round": 1,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 65.5515615940094
+            }
+          ],
+          "is_em": {
+            "proposal": "mixture",
+            "samples_per_task": 2,
+            "mean_ess_ratio": 0.958648550937554,
+            "mean_max_weight": 0.6038450167573692,
+            "mean_log_Z_hat": -41.978807513264634,
+            "theta_version": "add113d2e48109d92b10db286580902fa4a94925831f0bdfcce95584ca237656:theta:round-000",
+            "inference_version": "add113d2e48109d92b10db286580902fa4a94925831f0bdfcce95584ca237656:phi:round-000"
+          },
+          "proposal_fit": [
+            {
+              "epoch": 0,
+              "weighted_proposal_nll": 23.692513704299927
+            }
+          ],
+          "proposal_fit_target": "add113d2e48109d92b10db286580902fa4a94925831f0bdfcce95584ca237656:theta:round-000",
+          "elapsed_seconds": 0.06511241698171943,
+          "model_calls": {
+            "scoring_forwards": 28,
+            "generation_forwards": 0,
+            "generated_tokens": 0
+          },
+          "inference_model_calls": {
+            "scoring_forwards": 20,
+            "generation_forwards": 19,
+            "generated_tokens": 28
+          },
+          "claim": "approximate EM; no certified monotonicity"
+        },
+        {
+          "round": 2,
+          "m_step": [
+            {
+              "epoch": 0,
+              "sampled_negative_Q": 66.23910355567932
+            }
+          ],
+          "is_em": {
+            "proposal": "mixture",
+            "samples_per_task": 2,
+            "mean_ess_ratio": 0.978543465954248,
+            "mean_max_weight": 0.5740388609434682,
+            "mean_log_Z_hat": -41.32645285403673,
+            "theta_version": "add113d2e48109d92b10db286580902fa4a94925831f0bdfcce95584ca237656:theta:round-001",
+            "inference_version": "add113d2e48109d92b10db286580902fa4a94925831f0bdfcce95584ca237656:phi:round-001"
+          },
+          "proposal_fit": [
+            {
+              "epoch": 0,
+              "weighted_proposal_nll": 25.053847789764404
+            }
+          ],
+          "proposal_fit_target": "add113d2e48109d92b10db286580902fa4a94925831f0bdfcce95584ca237656:theta:round-001",
+          "elapsed_seconds": 0.05812049994710833,
+          "model_calls": {
+            "scoring_forwards": 28,
+            "generation_forwards": 0,
+            "generated_tokens": 0
+          },
+          "inference_model_calls": {
+            "scoring_forwards": 20,
+            "generation_forwards": 20,
+            "generated_tokens": 29
           },
           "claim": "approximate EM; no certified monotonicity"
         }
